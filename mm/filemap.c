@@ -44,10 +44,6 @@
 #include <linux/io_record.h>
 #endif
 
-#if defined(CONFIG_SDP)
-#include <sdp/cache_cleanup.h>
-#endif
-
 #ifdef CONFIG_FSCRYPT_SDP
 #include <linux/fscrypto_sdp_cache.h>
 #endif
@@ -201,11 +197,6 @@ void __delete_from_page_cache(struct page *page, void *shadow)
 {
 	struct address_space *mapping = page->mapping;
 	int nr = hpage_nr_pages(page);
-
-#if defined(CONFIG_SDP)
-	if (mapping_sensitive(mapping))
-		sdp_page_cleanup(page);
-#endif
 
 	trace_mm_filemap_delete_from_page_cache(page);
 	/*

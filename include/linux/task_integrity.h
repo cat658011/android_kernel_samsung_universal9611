@@ -110,18 +110,6 @@ struct task_integrity {
 	struct file *reset_file;
 };
 
-#ifdef CONFIG_FIVE
-
-#ifdef CONFIG_FIVE_GKI_10
-#define TASK_INTEGRITY(task) \
-	((struct task_integrity *)((task)->android_vendor_data1[2]))
-
-static inline void task_integrity_assign(struct task_struct *task,
-					 struct task_integrity *tint)
-{
-	task->android_vendor_data1[2] = (u64)tint;
-}
-#else
 #define TASK_INTEGRITY(task) ((task)->integrity)
 
 static inline void task_integrity_assign(struct task_struct *task,
@@ -129,7 +117,6 @@ static inline void task_integrity_assign(struct task_struct *task,
 {
 	task->integrity = tint;
 }
-#endif
 
 extern void task_integrity_set_reset_reason(struct task_integrity *intg,
 	enum task_integrity_reset_cause cause, struct file *file);
